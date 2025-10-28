@@ -26,7 +26,7 @@ public class SemanticCrawler {
         semanticCrawl(startingUrl, new ArrayList<String>(), token);
     }
 
-    public void semanticCrawl(String url, ArrayList<String> visitedUrls, String token){
+    private void semanticCrawl(String url, ArrayList<String> visitedUrls, String token){
         if (url.equals(targetUrl) || visitedUrls.contains(url)) {
             requestDoc(url, visitedUrls); // So we can print it for evidence!
             System.exit(0);
@@ -36,24 +36,25 @@ public class SemanticCrawler {
         Elements docLinks = document.select("a");
         var map = new HashMap<String, String>();
         for (Element link : docLinks) {
-            // Map the text of the url to the actual url link
-            map.put(
-                    link.text().replace(" - Wikipedia", ""),
-                    link.absUrl("href")
-            );
+            /* Map the text of the url to the actual url link
+             * Ex, for: <a href="linkHere.whatever">ExampleLinkText - Wikipedia</a>
+             * map -> { "ExampleLinkText" : "linkHere.whatever" } */
+            String urlText = link.text().replace(" - Wikipedia", "");
+            String fullUrl = link.absUrl("href");
+            map.put(urlText, fullUrl);
         }
         try {
-            // Sort the candidates in relation to the target via the Oracle API
+            // Sort the candidate titles in relation to the target title via the Oracle API
             List<String> candidateTexts = map.keySet().stream().toList();
             candidateTexts = Main.semanticSortTexts(targetTitle, candidateTexts, token);
 
             if (candidateTexts == null) return;
             for (String text : candidateTexts) {
                 String nextUrl = map.get(text);
-                if (nextUrl == null || nextUrl.isBlank() || !nextUrl.startsWith("https://en.wikipedia.org/wiki/"))
+                if (nextUrl == null || nextUrl.isBlank())
                     continue;
-                // Crawl into the URL if it hasn't already been visited
-                if (!visitedUrls.contains(nextUrl)) {
+                // Crawl into the URL if it's a wiki page that hasn't already been visited
+                if (nextUrl.startsWith("https://en.wikipedia.org/wiki/") && !visitedUrls.contains(nextUrl)) {
                     semanticCrawl(nextUrl, visitedUrls, token);
                 }
             }
@@ -69,7 +70,7 @@ public class SemanticCrawler {
             if (connection.response().statusCode() != 200) return null;
             visitedUrls.add(url);
             System.out.println("---------------------------------------------------------------------");
-            System.out.println("Step " + visitedUrls.size());
+            System.out.println("Step " + visitedUrls.size() + ":");
             System.out.println("Link: " + url + "\nTitle: " + document.title().replace(" - Wikipedia", ""));
             return document;
         } catch (IOException e) {
