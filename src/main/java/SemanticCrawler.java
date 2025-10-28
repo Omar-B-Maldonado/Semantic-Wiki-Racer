@@ -28,7 +28,7 @@ public class SemanticCrawler {
 
     public void semanticCrawl(String url, ArrayList<String> visitedUrls, String token){
         if (url.equals(targetUrl) || visitedUrls.contains(url)) {
-            requestDoc(url, visitedUrls);
+            requestDoc(url, visitedUrls); // So we can print it for evidence!
             System.exit(0);
         }
         var document = requestDoc(url, visitedUrls);
@@ -36,22 +36,23 @@ public class SemanticCrawler {
         Elements docLinks = document.select("a");
         var map = new HashMap<String, String>();
         for (Element link : docLinks) {
-            //map the text of the url to the actual url link
+            // Map the text of the url to the actual url link
             map.put(
                     link.text().replace(" - Wikipedia", ""),
                     link.absUrl("href")
             );
         }
         try {
-            // Send the candidates and target up to the API to get the closest URL
+            // Sort the candidates in relation to the target via the Oracle API
             List<String> candidateTexts = map.keySet().stream().toList();
             candidateTexts = Main.semanticSortTexts(targetTitle, candidateTexts, token);
+
             if (candidateTexts == null) return;
             for (String text : candidateTexts) {
-                // Crawl into the URL if it hasn't already been visited
                 String nextUrl = map.get(text);
                 if (nextUrl == null || nextUrl.isBlank() || !nextUrl.startsWith("https://en.wikipedia.org/wiki/"))
                     continue;
+                // Crawl into the URL if it hasn't already been visited
                 if (!visitedUrls.contains(nextUrl)) {
                     semanticCrawl(nextUrl, visitedUrls, token);
                 }

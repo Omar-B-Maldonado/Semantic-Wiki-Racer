@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Main {
     public static HttpClient   CLIENT       = HttpClient.newHttpClient();
     public static Dotenv       ENV_FILE     = Dotenv.load();
-    public static String       AUTH_BASE_URL     = ENV_FILE.get("OML_AUTH_BASE_URL");
+    public static String       AUTH_BASE_URL= ENV_FILE.get("OML_AUTH_BASE_URL");
     public static String       OML_BASE_URL = ENV_FILE.get("OML_SERVICE_BASE_URL");
     public static ObjectMapper JSON_MAPPER  = new ObjectMapper();
     public static HttpResponse.BodyHandler<String> STRING_BODYHANDLER = HttpResponse.BodyHandlers.ofString();
@@ -38,9 +38,9 @@ public class Main {
         return json.get("accessToken").toString();
     }
 
-    /* from a list of unrated texts, sorts the texts by how
+    /* from a list of unsorted strings, sorts the strings by how
      * semantically-similar they are to the target string,
-     * where element 0 is most similar */
+     * where the first element is most similar and the last element is the least */
     public static List<String> semanticSortTexts(String target, List<String> texts, String token) throws IOException, InterruptedException {
         //The API has a max batchsize, so we must send our text in batches
         final int MAX_BATCH_SIZE = 1000;
