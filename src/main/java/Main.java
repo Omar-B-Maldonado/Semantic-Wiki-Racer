@@ -4,6 +4,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -37,38 +38,46 @@ public class Main {
         return json.get("accessToken").toString();
     }
 
-    /* from a list of hyperlinks, returns the link that is
-     * most semantically-similar to the target string, along with its similarity score between 0 and 1
-     * returns {link, similarityValue}, where a value of 0 is least similar and 1 is most*/
-    public static List<String> getMostRelatedLink(String target, List<String> links, String token) throws IOException, InterruptedException {
-        var payloadString = JSON_MAPPER.writeValueAsString(Map.of(
-                "language", "AMERICAN",
-                "probe", target,
-                "sortDirection", "DESC",
-                "textList", links
-        ));
-        var request = HttpRequest.newBuilder()
-                .uri(URI.create(OML_BASE_URL + "v1/cognitive-text/similarity"))
-                .header("Authorization", "Bearer " + token)
-                .header("Content-Type", "application/json")
-                .header("Accept", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(payloadString, StandardCharsets.UTF_8))
-                .build();
-        var response = CLIENT.send(request, STRING_BODYHANDLER);
-        if (response.statusCode() != 200) {
-            throw new RuntimeException("Failed to get semantic similarities: " + response.body());
-        }
-        //the json is stored as a list of mappings from String to (String) Object
-        List<Map<String, Object>> json = JSON_MAPPER.readValue(response.body(), List.class);
-        if (json.isEmpty()) return null;
+    /* from a list of unrated texts, sorts the texts by how
+     * semantically-similar they are to the target string,
+     * where element 0 is most similar */
+    public static List<String> semanticSortTexts(String target, List<String> texts, String token) throws IOException, InterruptedException {
+        //The API has a max batchsize, so we must send our text in batches
+        final int MAX_BATCH_SIZE = 1000;
+        List<String> sortedTexts = new ArrayList<>();
+        for (int i = 0; i < texts.size(); i += MAX_BATCH_SIZE) {
+            int end = Math.min(i + MAX_BATCH_SIZE, texts.size());
+            List<String> batch = texts.subList(i, end);
 
-        /* our results are stored in descending order by similarityValue...
-         * so the first mapping {text : similarityValue}
-         * should contain the most similar text */
-        return List.of(
-                json.getFirst().get("text").toString(),
-                json.getFirst().get("similarity").toString()
-        );
+            var payloadString = JSON_MAPPER.writeValueAsString(Map.of(
+                    "language", "AMERICAN",
+                    "probe", target,
+                    "sortDirection", "DESC",
+                    "textList", batch
+            ));
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create(OML_BASE_URL + "v1/cognitive-text/similarity"))
+                    .header("Authorization", "Bearer " + token)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(payloadString, StandardCharsets.UTF_8))
+                    .build();
+            var response = CLIENT.send(request, STRING_BODYHANDLER);
+            if (response.statusCode() != 200) {
+                throw new RuntimeException("Failed to get semantic similarities: " + response.body());
+            }
+            /* the json is stored as a list of mappings from String to (String) Object,
+             * where each mapping contains {text, similarityScore} */
+            List<Map<String, Object>> json = JSON_MAPPER.readValue(response.body(), List.class);
+            if (json.isEmpty()) return null;
+
+            /* our results are stored in descending order by similarityValue...
+             * so we can just return the keys of the mapping */
+            for (Map<String, Object> entry : json) {
+                sortedTexts.add(entry.get("text").toString());
+            }
+        }
+        return sortedTexts;
     }
 
     public static void main(String[] args) {
@@ -79,10 +88,12 @@ public class Main {
         }
         System.out.println("Oracle Cloud Infrastructure AI Database...");
         String password = new String(console.readPassword("Admin Password: "));
+        String startingUrl = console.readLine("Enter a starting URL from Wikipedia: ");
+        String targetUrl = console.readLine("Enter the end-goal URL from Wikipedia: ");
         try {
             String token = getToken(password);
-            List<String> results = getMostRelatedLink("Cookie", List.of("Milk", "Dough", "Chocolate", "Oven"), token);
-            System.out.println(results);
+            var crawler = new SemanticCrawler(startingUrl, targetUrl, token);
+            crawler.beginCrawling();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         } finally {
