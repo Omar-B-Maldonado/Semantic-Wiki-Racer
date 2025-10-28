@@ -92,12 +92,12 @@ public class Main {
         String targetUrl = console.readLine("Enter the end-goal URL from Wikipedia: ");
         try {
             String token = getToken(password);
+            password = ""; // Clear the password if successful
             var crawler = new SemanticCrawler(startingUrl, targetUrl, token);
             crawler.beginCrawling();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-        } finally {
-            password = ""; //clear the password
+            password = ""; // Clear the password if error
         }
     }
 }
