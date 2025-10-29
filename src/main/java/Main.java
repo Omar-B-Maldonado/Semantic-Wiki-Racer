@@ -70,11 +70,23 @@ public class Main {
              * where each mapping contains {text, similarityScore} */
             List<Map<String, Object>> json = JSON_MAPPER.readValue(response.body(), List.class);
             if (json.isEmpty()) return null;
-
+            /* the JSON response from the API looks like this:
+                [
+                    { //most relevant mapping
+                        "text"              :   "vegetable soup",
+                        "similarityScore"   :   0.60
+                    }
+                    ...                                             //more mappings
+                    { //least relevant mapping
+                        "text"              : "jason vorhees",
+                        "similarityScore"   : 0.00002
+                    }
+                ]
+            */
             /* our results are stored in descending order by similarityValue...
              * so we can just return the keys of the mapping */
             for (Map<String, Object> entry : json) {
-                sortedTexts.add(entry.get("text").toString());
+                sortedTexts.add((String) entry.get("text"));
             }
         }
         return sortedTexts;
