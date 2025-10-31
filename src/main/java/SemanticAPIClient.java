@@ -44,7 +44,7 @@ public interface SemanticAPIClient {
     static List<String> semanticSort(List<String> texts, String target, String token)
             throws IOException, InterruptedException {
 
-        //The API has a max batchsize... for simplicity, we'll only send what can fit in a batch
+        //The API has a max batchsize... for simplicity, we'll only use what can fit in a batch
         final int MAX_BATCH_SIZE = 1000;
         int batchSize = Math.min(texts.size(), MAX_BATCH_SIZE);
 
@@ -60,6 +60,7 @@ public interface SemanticAPIClient {
         }
         return sortedTexts;
     }
+
     /**
      * Sends a batch of text entries to the Oracle API and
      * returns a list of mappings, with each map following

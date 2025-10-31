@@ -3,7 +3,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +26,7 @@ public class SemanticCrawler {
     public void beginCrawling() {
         semanticCrawl(startingUrl, token);
     }
+
     // Recursive method
     private void semanticCrawl(String url, String token){
         var document = requestDoc(url);
@@ -67,6 +67,7 @@ public class SemanticCrawler {
             return null;
         }
     }
+
     /**
      * Map the title of the wiki page url to the actual url link
      * Ex, for: <a href="https://en.wikipedia.org/wiki/WhateverTitle">Whatever Title - Wikipedia</a>

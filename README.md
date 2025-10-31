@@ -1,6 +1,4 @@
 # <p align="center">Semantic Wiki Racer</p>
-### <p align="center">!!! This project is still under construction !!!</p> ###
-<p align="center">As such, the "How to try it yourself" section is currently incomplete.</p>
 
 ### What is this?
 > A Web crawler that plays the Wiki Race game! It takes a linear path to get from the given starting page to the given end page.
@@ -15,5 +13,11 @@
 > The setup is extensive due to relying on Oracle's Semantic Similarities API. To use their API, you need to:
 > 1. Make an [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/) account and [provision yourself an Oracle Autonomous AI Database](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/autonomous-provision.html#GUID-0B230036-0A05-4CA3-AF9D-97A255AE0C08) (it's free).
 > 2. You'll need to get your own URLs for both authenticating to and using Oracle' Machine Learning Services
-   > - From your database's information page, select ***Database actions > View all database actions > Related Services > Oracle Machine Learning RESTful Services***
-   > - Copy the authentication link and the OML services common base URL
+> - From your database's information page, select ***Database actions > View all database actions > Related Services > Oracle Machine Learning RESTful Services***
+> - Copy the authentication link and the OML services common base URL
+    >    -    You'll need to create a file called .eml in the repo's parent folder with the following two lines:
+>      -       OML_AUTH_BASE_URL=INSERT_URL_1_HERE
+>      -       OML_SERVICE_BASE_URL=INSERT_URL_2_HERE
+> 3. You should be able to run the code from there!
+> - In your IDE's ***terminal***, run the command ***mvn clean verify*** to build the project
+> - run the command ***java -jar target/SemanticWikiRacer-1.0-SNAPSHOT.jar***
