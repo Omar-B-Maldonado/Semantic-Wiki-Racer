@@ -9,6 +9,13 @@
 ### Why?
 > While going down the backend path on roadmap.sh, I wanted to learn more about HTTP and how to handle HTTP requests/responses in Java. Having seen a youtube video about how to make a web crawler with JSoup, I got the idea to make a web crawler that crawls Wiki and basically plays the wiki game by itself.
 
+### Technologies Used
+> - Java 21
+> - Maven (for dependency management)
+> - Oracle Cognitive Text API
+> - Jackson (for JSON parsing)
+> - Dotenv (for environment management)
+
 ### How to try it yourself
 > The setup is extensive due to relying on Oracle's Semantic Similarities API. To use their API, you need to:
 > 1. Make an [Oracle Cloud Infrastructure](https://www.oracle.com/cloud/) account and [provision yourself an Oracle Autonomous AI Database](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/autonomous-provision.html#GUID-0B230036-0A05-4CA3-AF9D-97A255AE0C08) (it's free).
