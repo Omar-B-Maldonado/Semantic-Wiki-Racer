@@ -15,7 +15,7 @@
 > 2. You'll need to get your own URLs for both authenticating to and using Oracle' Machine Learning Services
 > - From your database's information page, select ***Database actions > View all database actions > Related Services > Oracle Machine Learning RESTful Services***
 > - Copy the authentication link and the OML services common base URL
-    >    -    You'll need to create a file called .eml in the repo's parent folder with the following two lines:
+> - You'll need to create a file called .eml in the repo's parent folder with the following two lines:
 >      -       OML_AUTH_BASE_URL=INSERT_URL_1_HERE
 >      -       OML_SERVICE_BASE_URL=INSERT_URL_2_HERE
 > 3. You should be able to run the code from there!
