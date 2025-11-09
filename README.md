@@ -2,19 +2,29 @@
 
 ### What is this?
 > A Web crawler that plays the Wiki Race game! It takes a linear path to get from the given starting page to the given end page.
+> **If you're unfamiliar with the Wiki Race game, it's when two people decide on a starting Wikipedia page and target Wikipedia page. Then, they race to get from the starting page to the target Wiki page, either in less clicks or less time. The semantic web crawler simulates this behaviour, but autonomously (you can try to race it, but good luck... it's pretty fast).
 
 ### How does it work?
-> It leverages an API from Oracle that allows the caller to compare a list of text against a target text. Each text in the list is given a rating from 0 to 1 in terms of how semantically-similar it is to the target, with 0 being the farthest in meaning from the target and 1 being the closest. Behind the scenes, Oracle uses a trained AI model to decide this rating.
+> The program: 
+> 1. Prompts the user for a Wikipedia page link to serve as the starting point, as well as one to serve as the end-goal.
+> 2. Uses Jsoup to scrape and store the page's hyperlinks in a list, filtering out any urls that aren't Wiki pages.
+> 3. Uses HttpClient to connect to the Oracle Cognitive Text API, sending the list of hyperlinks and receiving them back sorted in order of semantic-similarity to the target
+> 4. Crawls into the link that is most semantically-similar to the target.
+> 5. Recursively jumps to step 2 until the target page is reached.
+>
+> For context, the Oracle API compares a list of text against a target text. Each text in the list is given a rating from 0 to 1 in terms of how semantically-similar it is to the target, with 0 being the farthest in meaning from the target and 1 being the closest. Behind the scenes, Oracle uses a trained AI model to decide this rating.
 
 ### Why?
 > While going down the backend path on roadmap.sh, I wanted to learn more about HTTP and how to handle HTTP requests/responses in Java. Having seen a youtube video about how to make a web crawler with JSoup, I got the idea to make a web crawler that crawls Wiki and basically plays the wiki game by itself.
 
 ### Technologies Used
-> - Java 21
-> - Maven (for dependency management)
-> - Oracle Cognitive Text API
-> - Jackson (for JSON parsing)
-> - Dotenv (for environment management)
+> - Java 21                   (because Java is actually awesome)
+> - Maven                     (for dependency management)
+> - Oracle Cognitive Text API (for semantically scoring links)
+> - Jackson                   (for JSON parsing)
+> - Jsoup                     (for scraping the pages' hyperlinks)
+> - HttpClient                (for connecting to the Oracle API)
+> - Dotenv                    (for environment management)
 
 ### How to try it yourself
 > The setup is extensive due to relying on Oracle's Semantic Similarities API. To use their API, you need to:
