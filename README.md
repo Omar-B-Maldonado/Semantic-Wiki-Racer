@@ -2,7 +2,11 @@
 
 ### What is this?
 > A Web crawler that plays the Wiki Race game! It takes a linear path to get from the given starting page to the given end page.
-> **If you're unfamiliar with the Wiki Race game, it's when two people decide on a starting Wikipedia page and target Wikipedia page. Then, they race to get from the starting page to the target Wiki page, either in less clicks or less time. The semantic web crawler simulates this behaviour, but autonomously (you can try to race it, but good luck... it's pretty fast).
+
+> If you're unfamiliar with the Wiki Race game, it's when two people decide on a starting Wikipedia page and target Wikipedia page. Then, they race to get from the starting page to the target Wiki page, either in less clicks or less time. The Semantic Wiki Racer simulates this behaviour, but autonomously (you can try to race it, but good luck... it's pretty fast).
+
+### From Teletubbies to Noodle in seconds
+>![racing3](https://github.com/user-attachments/assets/e4afc195-82e7-4f80-a2a2-952ea6b9d515)
 
 ### How does it work?
 > The program: 
@@ -38,3 +42,4 @@
 > 3. You should be able to run the code from there!
 > - In your IDE's ***terminal***, run the command ***mvn clean verify*** to build the project
 > - run the command ***java -jar target/SemanticWikiRacer-1.0-SNAPSHOT.jar***
+> - when prompted for the Admin password, provide the password to your OCI account (it's used to create the API token)
