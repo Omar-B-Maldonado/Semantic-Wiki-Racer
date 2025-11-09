@@ -1,7 +1,7 @@
 # <p align="center">Semantic Wiki Racer</p>
 
 ### What is this?
-> A Web crawler that plays the Wiki Race game! It takes a linear path to get from the given starting page to the given end page.
+> A Web crawler that plays [the Wiki Race game](https://en.wikipedia.org/wiki/Wikipedia:Wiki_Game)! It takes a linear path to get from the given starting page to the given end page.
 
 > If you're unfamiliar with the Wiki Race game, it's when two people decide on a starting Wikipedia page and target Wikipedia page. Then, they race to get from the starting page to the target Wiki page, either in less clicks or less time. The Semantic Wiki Racer simulates this behaviour, but autonomously (you can try to race it, but good luck... it's pretty fast).
 
