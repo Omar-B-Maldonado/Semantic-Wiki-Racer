@@ -19,16 +19,16 @@
 > For context, the Oracle API compares a list of text against a target text. Each text in the list is given a rating from 0 to 1 in terms of how semantically-similar it is to the target, with 0 being the farthest in meaning from the target and 1 being the closest. Behind the scenes, Oracle uses a trained AI model to decide this rating.
 
 ### Why?
-> While going down the backend path on roadmap.sh, I wanted to learn more about HTTP and how to handle HTTP requests/responses in Java. Having seen a youtube video about how to make a web crawler with JSoup, I got the idea to make a web crawler that crawls Wiki and basically plays the wiki game by itself.
+> While going down the backend path on [roadmap.sh](https://roadmap.sh/), I wanted to learn more about HTTP and how to handle HTTP requests/responses in Java. Having seen [a YouTube video about how to make a web crawler with Jsoup](https://www.youtube.com/watch?v=wrFXBV4MwvI), I got the idea to make a web crawler that crawls Wiki and basically plays the wiki game by itself.
 
 ### Technologies Used
-> - Java 21                   (because Java is actually awesome)
-> - Maven                     (for dependency management)
-> - Oracle Cognitive Text API (for semantically scoring links)
-> - Jackson                   (for JSON parsing)
-> - Jsoup                     (for scraping the pages' hyperlinks)
-> - HttpClient                (for connecting to the Oracle API)
-> - Dotenv                    (for environment management)
+> - [Java 21](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html)                                                        (because Java is actually awesome)
+> - [Maven](https://maven.apache.org/)                                                                                                             (for dependency management)
+> - [Oracle Cognitive Text API](https://docs.oracle.com/en/database/oracle/machine-learning/omlss/omlss/op-v1-cognitive-text-similarity-post.html) (for semantically scoring links)
+> - [Jackson](https://en.wikipedia.org/wiki/Jackson_(API))                                                                                         (for JSON parsing)
+> - [Jsoup](https://jsoup.org/)                                                                                                                    (for scraping the pages' hyperlinks)
+> - [HttpClient](https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.html)                                   (for connecting to the Oracle API)
+> - [Dotenv](https://github.com/cdimascio/dotenv-java)                                                                                             (for environment management)
 
 ### How to try it yourself
 > The setup is extensive due to relying on Oracle's Semantic Similarities API. To use their API, you need to:
